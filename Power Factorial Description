@@ -1,0 +1,37 @@
+Problem: 4-digit number
+In this problem, you will have to implement the following functions. After implementing the functions, you have to call those functions properly from the main function or other functions appropriate to get the correct output. Please read the function descriptions carefully to identify the return type and parameters of the functions.
+ 
+The main objective of the code is to take a four-digit integer as input and then perform some required operations on it.
+ 
+Function 1:
+Name: isFourDigit()
+Precondition: the function takes an integer as a parameter (you can assume it is a positive integer)
+Post condition: The function returns 1 if the number is 4 digits number. Otherwise, the function will return 0.
+ 
+Function 2:
+Name: reverse4Digit()
+Precondition: the function takes a 4 digits positive integer as part of the parameter
+Post condition: The function reverse the 4-digit number and returns it. Before reversing the number, it calls the isFourDigit() function to check whether the number is 4 digits or not to prevent potential error during the calculation. If the function cannot reverse the number as the number of digits is not 4 digits, it returns -1.
+ 
+Function 3:
+Name: addSides4Digit()
+Precondition: the function takes a 4 digits positive integer as part of the parameter
+Post condition: The function adds the first and last digit of the number and prints their sum. Before extracting the first and last digits, it calls the isFourDigit() function to check whether the number is 4 digits or not to prevent potential error during calculation (if you do not use a loop). If the function sees that the number of digits is not 4, it prints "Invalid input to calculate sides". Note that the function does not return anything.
+ 
+Function 4:
+Name: isPalindrome4Digit()
+Description: a number is called palindrome if the reverse of the number is the same as the original number. For example, 1221 is a palindrome as the reverse is the same 1221.
+Precondition: the function takes a 4 digits positive integer as part of the parameter.
+Post condition: The function calls the reverse4Digit() function with the number and compares it with the original number. It returns 1 if it is a palindrome, returns 0 if it is not, and returns -1 if it receives -1 from the reverse4Digit() function due to the wrong number of digits.
+ 
+Content of the Main function:
+In the main function, prompt the user for input.
+Then call the reverse4Digit function. If the function returns -1 to the main function, print "Invalid to reverse". Otherwise, print the 4 digits reverse number returned from the reverse4Digit function.
+ 
+Then call the addSides4Digit() function. That function either prints "Invalid input to calculate sides" or the sum of the first and last digits of the number depending on the number.
+ 
+Then the main function calls isPalindrome4Digit() function. If the main function receives 1 from the function call, it prints "Palindrome", if it receives 0, it prints "Not palindrome", otherwise prints "Invalid input for palindrome checker".
+ 
+Note that you must have to implement the functions and use them for the purpose of the overall objective of the problem. If your program passes all the test cases, but you do not write and use the functions, you will receive a significantly low credit.
+Additional restriction: 
+As we have not started learning loop yet, you are not allowed to use loop in this assignment.
