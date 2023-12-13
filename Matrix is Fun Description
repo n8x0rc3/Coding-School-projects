@@ -1,0 +1,17 @@
+Problem: Matrix is Fun!
+ 
+In this problem, you will play with various operations on a matrix.
+ 
+Here is a list of function that you need to implement:
+ 
+displayMatrix():This function takes a 2D array, number of rows, and number of columns as a parameter, then prints the matrix in a well-formatted way. Display different rows of the matrix in different rows in the display. Additionally, use %4d to print the numbers to format the output.
+ 
+findMaxPerRow(): This function takes a 2D array, number of rows, and number of columns as a parameter, then prints the highest number in each row.
+ 
+printLLTriangle(): This function takes a 2D array, number of rows, and number of columns as a parameter, then prints the lower-left triangle numbers and display the remaining numbers as zero. Display different rows of the matrix in different rows in the display. Additionally, use %4d to print the numbers to format the output.
+ 
+printURTriangle(): This function takes a 2D array, number of rows, and number of columns as a parameter, then prints the upper right triangle numbers and display the remaining numbers as zero. Display different rows of the matrix in different rows in the display. Additionally, use %4d to print the numbers to format the output.
+ 
+void addMatrix(int M1[][MAXCOLUMNS], int M2[][MAXCOLUMNS], int R[][MAXCOLUMNS], int r, int c): This function takes 3 2D arrays (2 of them are filled and one is empty), number of rows, and number of columns as a parameter (assuming all matrix has the same number of rows and columns. Then the function adds the first two matrix and stores the result in the third matrix. The return type of the function is void and note that you should not print the matrix or call the display function from this function to print the result matrix. The result matrix needs to be printed from the main function.
+ 
+sumSurrounding(): In the parameter list this function takes a matrix, number of rows and columns, and two more integers i and j that indicate the position of a number in the matrix. Then the function sum-up all the adjacent numbers of position [i][j] and returns the result.
