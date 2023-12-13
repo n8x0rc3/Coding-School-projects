@@ -1,0 +1,278 @@
+#include <stdio.h>
+#define MAXROWS 100
+#define MAXCOLUMNS 100
+void displayMatrix(int array[][MAXCOLUMNS], int rows, int columns);
+void findMaxPerRow(int array[][MAXCOLUMNS], int rows, int columns);
+void printLLTriangle(int array[][MAXCOLUMNS], int rows, int columns);
+void printURTriangle(int array[][MAXCOLUMNS], int rows, int columns);
+void addMatrix(int A[][MAXCOLUMNS], int B[][MAXCOLUMNS], int C[][MAXCOLUMNS], int rows, int columns);
+int sumSurrounding(int array[][MAXCOLUMNS], int rows, int columns, int i, int j);
+
+
+int main(){
+
+    // scan for rows + columns
+    int rows, columns;
+    printf("enter number of rows and columns: ");
+    scanf("%d %d", &rows, &columns);
+
+    // initialize arrays
+    int matrix1[MAXROWS][MAXCOLUMNS];
+    int matrix2[MAXROWS][MAXCOLUMNS];
+
+    // input matrix 1
+    printf("input for matrix 1:\n");
+
+    //scan for matrix 1 data
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    // print values of rows and columns in matrix 1
+    for(int i = 0, j = 0; i < rows; i++){
+        printf("data for matrix1[%d][0] to matrix1[%d][%d]", i, i, columns-1);
+
+        /*
+        for(int j = 0; j < columns; j++){
+          printf("%4d", matrix1[i][j]);
+        }
+        */
+    }
+
+    // prompt for matrix 2 input
+    printf("input for matrix 2:\n");
+
+    //scan for matrix 2 input
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    // print values of rows and columns in matrix 2
+    for(int i = 0, j = 0; i < rows; i++){
+        printf("data for matrix2[%d][0] to matrix2[%d][%d]", i, i, columns-1);
+        /*
+        for(int j = 0; j < columns; j++){
+            printf("%4d", matrix2[i][j]);
+        }
+        */
+    }
+
+    // call display function to print matrix 1
+    printf("\nprinting matrix 1:\n");
+    displayMatrix(matrix1, rows, columns);
+
+    // call display function to print matrix 2
+    printf("printing matrix 2:\n");
+    displayMatrix(matrix2, rows, columns);
+
+    // call max function to print table of max row values
+    printf("\nprinting max per row for matrix 1:\n");
+    findMaxPerRow(matrix1, rows, columns);
+
+    // call lower left triangle to print it
+    printf("\nprinting lower left triangle of matrix 1:\n");
+    printLLTriangle(matrix1, rows, columns);
+
+    // call upper right triangle function to print it
+    printf("\nprinting upper right triangle for matrix 1:\n");
+    printURTriangle(matrix1, rows, columns);
+
+
+    // segment for sum matrix of 1 and 2 + display
+    int sumMatrix1_2[MAXROWS][MAXCOLUMNS];
+    addMatrix(matrix1, matrix2, sumMatrix1_2, rows, columns);
+    printf("\nmatrix 1 + matrix 2 is:\n");
+    displayMatrix(sumMatrix1_2, rows, columns);
+
+    // segment for sum surrounding
+    int i = 1, j = 1;
+    for(int i = 1, j = 1; !(j < 0) || !( j < 0 ); ){
+        printf("enter i and j for calculating sum of surrounding: ");
+        scanf("%d%d", &i,&j);
+        if(i < 0 || j < 0){
+            printf("Exit");
+            break;
+        }
+        printf("sum of surrounding is %d\n", sumSurrounding(matrix1, rows, columns, i, j));
+    }
+    
+    return 0;
+}
+
+void displayMatrix(int array[][MAXCOLUMNS], int rows, int columns){
+
+    //print values from each row and column
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            printf("%4d", array[i][j]);
+        }
+        printf("\n");
+    }
+
+}
+
+void findMaxPerRow(int array[][MAXCOLUMNS], int rows, int columns){
+
+    //initialize an array to hold variable amount of rows;
+    int maxValue[MAXCOLUMNS];
+    int currentMax = -1;
+
+    //loop to store max value of each row in maxValue[]
+    for(int i = 0; i < rows; i++){
+        currentMax = -1;
+
+        for(int j = 0; j < columns; j++){
+        if(currentMax > array[i][j])
+            continue;
+        else{
+            currentMax = array[i][j];
+            maxValue[i] = currentMax;
+        }
+        }
+    }
+
+    //print table of rows and max value
+    for(int i = 0; i < rows; i++){
+        printf("max of row %d is %d\n", i, maxValue[i]);
+    }
+
+}
+
+void printLLTriangle(int array[][MAXCOLUMNS], int rows, int columns){
+
+    int leftTriangleArray[rows][MAXCOLUMNS];
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            leftTriangleArray[i][j] = array[i][j];
+        }
+    }
+
+    int lastValue = array[rows - 1][columns-1];
+    int firstValue = array[0][0];
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++)  {
+            leftTriangleArray[i][j+i+1] = 0;
+        }
+    }
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            printf("%4d", leftTriangleArray[i][j]);
+    }
+    printf("\n");
+    }
+
+}
+
+void printURTriangle(int array[][MAXCOLUMNS], int rows, int columns){
+
+  int upperTriangleArray[rows][MAXCOLUMNS];
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            upperTriangleArray[i][j] = array[i][j];
+        }
+    }
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < i; j++){
+            upperTriangleArray[i][j] = 0;
+        }
+    }
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            printf("%4d", upperTriangleArray[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void addMatrix(int A[][MAXCOLUMNS], int B[][MAXCOLUMNS], int C[][MAXCOLUMNS], int rows, int columns){
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++)
+            C[i][j] = A[i][j] + B[i][j];
+
+    }
+
+}
+
+int sumSurrounding(int array[][MAXCOLUMNS], int rows, int columns, int i, int j){
+    
+    int up, upLeft, upRight, down, downLeft, downRight, left, right;
+    int sum;
+
+    //up position
+    if( i - 1 < 0){
+        up = 0;
+    }
+    else{
+        up = array[i - 1][j];
+    }
+
+    //upLeft position
+    if( i - 1 >= 0 && j - 1 >= 0){
+        upLeft = array[i - 1][ j - 1];
+    }
+    else{
+         upLeft = 0;
+    }
+
+    //down position
+    if( i + 1 <= rows - 1){
+        down = array[i + 1][j];
+    }
+    else{
+        down = 0;
+    }
+    //downLeft position
+    if( i + 1 <= rows - 1 && j - 1 >= 0){
+        downLeft = array[i+1][j-1];
+    }
+    else{
+        downLeft = 0;
+    }
+
+    //left position
+    if( j - 1 < 0){
+        left = 0;
+    }
+    else{
+        left = array[i][j - 1];
+    }
+
+    //upRight position
+    if(j + 1 <= columns - 1 && i - 1 >= 0){
+        upRight = array[i-1][j+1];
+    }
+    else {
+        upRight = 0;
+    }
+    //downRight position
+    if(i+1 <= rows - 1 && j + 1 <= columns - 1 ){
+        downRight = array[i + 1][j + 1];
+    }
+    else{
+        downRight = 0;
+    }
+
+    //right position
+    if( j + 1 <= columns - 1 ){
+        right = array[i][j + 1];
+    }
+    else{
+        right = 0;
+    }
+
+    sum = up + upRight + upLeft + down + downRight + downLeft + right + left;
+
+    return sum;
+   
+}
