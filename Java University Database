@@ -1,0 +1,445 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.util.Comparator;
+import java.util.InputMismatchException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+abstract class Person implements Comparable<Person> {
+    protected String fullName;
+    protected String id;
+
+    public Person(String fullName, String id) {
+        this.fullName = fullName;
+        this.id = id;
+    }
+
+    public abstract void print();
+    
+    public String getFullName() {
+        return fullName;
+    }
+
+    @Override
+    public int compareTo(Person other) {
+        return this.fullName.compareTo(other.fullName);
+    }
+}
+
+class Student extends Person {
+    private double gpa;
+    private int creditHours;
+    
+    public double getGpa() {
+        return gpa;
+    }
+
+    public int getCreditHours() {
+        return creditHours;
+    }
+
+    public Student(String fullName, String id, double gpa, int creditHours) {
+        super(fullName, id);
+        this.gpa = gpa;
+        this.creditHours = creditHours;
+    }
+
+
+    public void print() {
+        
+        System.out.println("\nHere is the tution invoice for " + fullName + "\n");
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(fullName + "\t\t" + id);
+        System.out.println("Credit Hours: " + creditHours + " ($236.45/credit hour)");
+        System.out.println("Fees: $52");
+        double totalPayment = creditHours * 236.45 + 52;
+        double discount = (gpa >= 3.85) ? 0.25 * totalPayment : 0;
+        totalPayment -= discount;
+        System.out.println("Total payment (after discount): $" + totalPayment + " (" +
+                ((discount > 0) ? (discount * 100 / (creditHours * 236.45 + 52)) : "0") +
+                "% discount applied)");
+        System.out.println("---------------------------------------------------------------------------\n");
+    }
+}
+
+abstract class Employee extends Person {
+
+  protected String department;
+
+  public Employee(String fullName, String id, String department) {
+    super(fullName, id);
+    this.department = department;
+  }
+
+}
+
+class Faculty extends Employee {
+    private String rank;
+
+    public Faculty(String fullName, String id, String department, String rank) {
+        super(fullName, id, department);
+        this.rank = rank;
+    }
+    
+    public String getRank() {
+        return rank;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+
+
+    public void print() {
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(fullName + "\t\t" + id);
+        System.out.println(department + " Department, " + rank);
+        System.out.println("---------------------------------------------------------------------------\n");
+    }
+}
+
+class Staff extends Employee {
+    private String status;
+
+    public Staff(String fullName, String id, String department, String status) {
+        super(fullName, id, department);
+        this.status = status;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+
+
+    public String getStatusDescription() {
+        return status.equals("F") ? "Full" : "Part";
+    }
+    
+    public void print() {
+    
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(fullName + "\t\t" + id);
+        System.out.println(department + " Department, " + getStatusDescription() + " Time");
+        System.out.println("---------------------------------------------------------------------------\n");
+    }
+    
+    
+}
+
+public class finalProject {
+    private static ArrayList<Person> peopleList = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice = 0;
+        
+        System.out.println("\t\tWelcome to my Personal Management Program\n\n");
+        System.out.println("Choose one of the options:");
+        
+        do {
+            printMenu();
+            System.out.println("\n\tEnter your selection: ");
+            
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); 
+                System.out.print("\n");
+                switch (choice) {
+                    case 1:
+                        enterFacultyInfo();
+                        break;
+                    case 2:
+                        enterStudentInfo();
+                        break;
+                    case 3:
+                        printTuitionInvoice();
+                        break;
+                    case 4:
+                        printFacultyInfo();
+                        break;
+                    case 5:
+                        enterStaffInfo();
+                        break;
+                    case 6:
+                        printStaffInfo();
+                        break;
+                    case 7:
+                        deletePerson();
+                        break;
+                    case 8:
+                        exitProgram();
+                        break;
+                    default:
+                        System.out.println("\n\nInvalid entry - please try again\n\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("\n\nInvalid entry - please try again.\n\n");
+                scanner.nextLine(); 
+            }
+        } while (choice != 8);
+    }
+
+    private static void printMenu() {
+        System.out.println("1. Enter the information of a faculty");
+        System.out.println("2. Enter the information of a student");
+        System.out.println("3. Print tuition invoice for a student");
+        System.out.println("4. Print faculty information");
+        System.out.println("5. Enter the information of a staff member");
+        System.out.println("6. Print the information of a staff member");
+        System.out.println("7. Delete a person");
+        System.out.println("8. Exit Program");
+    }
+
+    private static void enterFacultyInfo() {
+        System.out.print("Enter the faculty info:\n\tName of the faculty: ");
+        String name = scanner.nextLine();
+
+        String id;
+        do {
+            System.out.print("\tID: ");
+            id = scanner.nextLine();
+            if (!id.matches("[a-zA-Z]{2}\\d{4}")) {
+                System.out.println("Invalid ID format. Must be LetterLetterDigitDigitDigitDigit");
+            }
+        } while (!id.matches("[a-zA-Z]{2}\\d{4}"));
+
+        String rank;
+        do {
+            System.out.print("\tRank: ");
+            rank = scanner.nextLine();
+            if (!rank.equalsIgnoreCase("Professor") && !rank.equalsIgnoreCase("Adjunct")) {
+                System.out.println("\"" + rank + "\" is invalid");
+            }
+        } while (!rank.equalsIgnoreCase("Professor") && !rank.equalsIgnoreCase("Adjunct"));
+
+        String department;
+        do {
+            System.out.print("\tDepartment: ");
+            department = scanner.nextLine();
+            department = department.substring(0, 1).toUpperCase() + department.substring(1).toLowerCase();
+            if (!department.equals("Mathematics") && !department.equals("Engineering") && !department.equals("English")) {
+                System.out.println("Invalid department. Choose from Mathematics, Engineering, or English.");
+            }
+        } while (!department.equals("Mathematics") && !department.equals("Engineering") && !department.equals("English"));
+
+        peopleList.add(new Faculty(name, id, department, rank));
+        System.out.println("Faculty added!\n\n");
+    }
+
+    private static void enterStudentInfo() {
+        System.out.print("Enter the student info:\n\tName of Student: ");
+        String name = scanner.nextLine();
+
+        String id;
+        do {
+            System.out.print("\tID: ");
+            id = scanner.nextLine();
+            if (!id.matches("[a-zA-Z]{2}\\d{4}")) {
+                System.out.println("Invalid ID format. Must be LetterLetterDigitDigitDigitDigit");
+            }
+        } while (!id.matches("[a-zA-Z]{2}\\d{4}"));
+
+        System.out.print("\tGPA: ");
+        double gpa = scanner.nextDouble();
+
+        System.out.print("\tCredit hours: ");
+        int creditHours = scanner.nextInt();
+
+        peopleList.add(new Student(name, id, gpa, creditHours));
+        System.out.println("Student added!\n\n");
+    }
+    
+    private static void printTuitionInvoice() {
+        System.out.print("Enter the student's ID: ");
+        String studentId = scanner.nextLine();
+
+        boolean found = false;
+        for (Person person : peopleList) {
+            if (person instanceof Student && person.id.equals(studentId)) {
+                ((Student) person).print();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No student matched!");
+        }
+    }
+
+    private static void printFacultyInfo() {
+        System.out.print("Enter the Faculty's ID: ");
+        String facultyId = scanner.nextLine();
+
+        for (Person person : peopleList) {
+            if (person instanceof Faculty && person.id.equals(facultyId)) {
+                ((Faculty) person).print();
+                break;
+            }
+        }
+    }
+    
+    private static void enterStaffInfo() {
+        System.out.print("Name of the staff member: ");
+        String name = scanner.nextLine();
+
+        String id;
+        do {
+            System.out.print("Enter the id: ");
+            id = scanner.nextLine();
+            if (!id.matches("[a-zA-Z]{2}\\d{4}")) {
+                System.out.println("Invalid ID format. Must be LetterLetterDigitDigitDigitDigit");
+            }
+        } while (!id.matches("[a-zA-Z]{2}\\d{4}"));
+
+        String department;
+        do {
+            System.out.print("Department: ");
+            department = scanner.nextLine();
+            department = department.substring(0, 1).toUpperCase() + department.substring(1).toLowerCase();
+            if (!department.equals("Mathematics") && !department.equals("Engineering") && !department.equals("English")) {
+                System.out.println("Invalid department. Choose from Mathematics, Engineering, or English.");
+            }
+        } while (!department.equals("Mathematics") && !department.equals("Engineering") && !department.equals("English"));
+
+        String status;
+        do {
+            System.out.print("Status, Enter P for Part Time, or Enter F for Full Time: ");
+            status = scanner.nextLine();
+            status = status.toUpperCase();
+            if (!status.equals("P") && !status.equals("F")) {
+                System.out.println("Invalid status. Choose P for Part Time or F for Full Time.");
+            }
+        } while (!status.equals("P") && !status.equals("F"));
+
+        peopleList.add(new Staff(name, id, department, status));
+        System.out.println("Staff member added!\n\n");
+    }
+
+    private static void printStaffInfo() {
+        System.out.print("Enter the Staff's ID: ");
+        String staffId = scanner.nextLine();
+
+        boolean found = false;
+        for (Person person : peopleList) {
+            if (person instanceof Staff && person.id.equals(staffId)) {
+                ((Staff) person).print();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No staff member matched!\n\n");
+        }
+    }
+    
+   private static void deletePerson() {
+        System.out.print("Enter the ID of the person to delete: ");
+        String idToDelete = scanner.nextLine();
+
+        boolean found = false;
+        for (Person person : peopleList) {
+            if (person.id.equals(idToDelete)) {
+                peopleList.remove(person);
+                found = true;
+                System.out.println("Person deleted!");
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Sorry, no such person exists.");
+        }
+    }
+
+    private static void exitProgram() {
+        System.out.print("Would you like to create the report? (Y/N): ");
+        String createReportChoice = scanner.nextLine().toUpperCase();
+
+        if (createReportChoice.equals("Y")) {
+            createReport();
+        }
+
+        System.out.println("Goodbye!");
+    }
+
+private static void createReport() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    String currentDate = dateFormat.format(new Date());
+
+    try (FileWriter writer = new FileWriter("report.txt")) {
+        System.out.println("Would you like to sort your students by descending GPA or name (1 for GPA, 2 for name): ");
+        int sortingPreference = scanner.nextInt();
+        scanner.nextLine();
+
+        // Sorting
+        if (sortingPreference == 1) {
+            Collections.sort(peopleList, Collections.reverseOrder());
+        } else if (sortingPreference == 2) {
+            Collections.sort(peopleList, Comparator.comparing(Person::getFullName).reversed());
+        } else {
+            System.out.println("Invalid sorting preference. Defaulting to sorting by GPA.");
+        }
+
+        writer.write("Report created on " + currentDate + "\n");
+        writer.write("***********************\n");
+
+        writer.write("Faculty Members\n");
+        writer.write("-------------------------\n");
+        int facultyCount = 1;
+        for (Person person : peopleList) {
+            if (person instanceof Faculty) {
+                writer.write(facultyCount + ". " + person.fullName + "\n");
+                writer.write("ID: " + person.id + "\n");
+                writer.write(((Faculty) person).getRank() + ", " +
+                        ((Faculty) person).getDepartment() + "\n");
+                facultyCount++;
+            }
+        }
+
+        writer.write("\nStaff Members\n");
+        writer.write("-------------------\n");
+        int staffCount = 1;
+        for (Person person : peopleList) {
+            if (person instanceof Staff) {
+                writer.write(staffCount + ". " + person.fullName + "\n");
+                writer.write("ID: " + person.id + "\n");
+                writer.write(((Staff) person).getDepartment() + ", " +
+                        ((Staff) person).getStatusDescription() + " Time\n");
+                staffCount++;
+            }
+        }
+
+        writer.write("\nStudents (Sorted by GPA in descending order)\n");
+        writer.write("-----------\n");
+
+        List<Student> students = new ArrayList<>();
+        for (Person person : peopleList) {
+            if (person instanceof Student) {
+                students.add((Student) person);
+            }
+        }
+
+        students.sort(Comparator.comparingDouble(Student::getGpa).reversed());
+
+        int studentCount = 1;
+        for (Student student : students) {
+            writer.write(studentCount + ". " + student.getFullName() + "\n");
+            writer.write("ID: " + student.id + "\n");
+            writer.write("GPA: " + student.getGpa() + "\n");
+            writer.write("Credit hours: " + student.getCreditHours() + "\n");
+            studentCount++;
+        }
+
+        System.out.println("Report created and saved on your hard drive!");
+    } catch (IOException e) {
+        System.out.println("An error occurred while writing to the file.");
+        e.printStackTrace();
+    }
+}
+}
