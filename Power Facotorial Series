@@ -1,0 +1,67 @@
+// Nathanael Pierre Louis COP3223C 10/11/2022
+// Program to create summation of n^n/n! + n2^n2/n2! .... 
+#include <stdio.h>
+long long factorial(int x);
+long long power(int x, int y);
+
+int main(void) 
+{
+  // initialize several variables
+  int i;
+  int range;
+  long long top, bottom;
+  float sum = 0, nth;
+
+  // scan for range
+  printf("Enter your n:\n");
+  scanf("%d", &range);
+  
+  // for compliance with c arithmetic rules (keep decimal values)
+  float makeTopFloat, makeBottomFloat;
+
+  // calculate value of n^n/n!
+  for (i=1; i <= range; i++)
+    {
+      top = power(i, i);
+      makeTopFloat = top;
+      bottom = factorial(i);
+      makeBottomFloat = bottom;
+
+      // calculate nth term, and sum
+      nth = makeTopFloat/makeBottomFloat;
+      sum += nth;
+    }
+  
+  printf("Summation of the series from 1 to %d is: %.2f\n", range, sum);
+
+  return 0;
+}
+
+long long factorial(int x)
+{
+  long long sum = 1;
+  int i;
+
+  // sum = sum * (i--) until i is 0
+  for (i=x; i > 0; i--)
+    {
+      sum *= i;
+    }
+
+  return sum; 
+}
+
+long long power(int x, int y)
+{
+
+  int i;
+  long long sum = 1;
+  int temp;
+
+  // sum = sum(1) * temp for i number of times until i is 0
+  for (temp = x, i = y; i > 0; i--)
+    sum *= temp;
+
+  return sum;
+  
+}
