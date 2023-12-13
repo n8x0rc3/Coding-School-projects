@@ -1,0 +1,31 @@
+String Problem 2-String Sorting and Searching
+
+In this problem, you will take a list of names from the user and sort them alphabetically using selection sort.
+
+The code for selection sort for integers is available in the "Lab and Weekly Coding Solution module" in webcourses. In order to solve this problem, you also need to know string.h library and how to manage an array of strings and process them. We have gone through two related examples in the last part of the string lecture. Please watch the recording available in the String module [Don't skip that!]. 
+
+ 
+
+Use the following #define in your code's main.h and use them appropriately in your code
+
+#define MAXSTRINGS 100
+
+#define MAXLENGTH 51 //50+1
+
+ 
+
+In the main function ask the user how many names the user wants to input. Let's say the number be N.
+
+Then take N number of names and put them in an array of strings.
+
+ 
+
+Then write a function and name it as selection_sort.  This function should take two parameters. The first parameter should contain all the strings as a 2D array of characters, and the second parameter is an integer representing the number of strings. Then the function sorts the strings alphabetically. The sorting should not be case-sensitive. To achieve that, please convert all the strings to a lower case letter before calling the selection_sort function.
+
+ 
+
+Then in the main function, print the strings in sorted order. After sorting, your code should keep taking a search string until the user enters the word "exit". Based on the input, your program should find all the names containing the given search string as a substring. The search should not be case-sensitive.
+
+ 
+
+While solving this code, you must have to use string.h library for copying, comparing, and substring searching.
